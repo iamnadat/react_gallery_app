@@ -1,3 +1,7 @@
+1. mv /src/config.sample.js /src/config.js
+2. replace apiKey
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
