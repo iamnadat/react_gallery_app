@@ -16,6 +16,10 @@ class App extends Component {
   //  https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=6c44bce6dad9fa5e8ef4b09f74f99278&tags=Trending&per_page=24&format=json&nojsoncallback=1
 
   componentDidMount = (query = 'Art') => {
+    this.performSearch();
+  }
+
+  performSearch = (query = 'Art') => {
     axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`)
     .then( response => {
       this.setState({
@@ -27,20 +31,18 @@ class App extends Component {
       console.log('Error fetching and parsing data', error);
     });
   }
+
   render() {
     return (
       <div className="container">
 
-        <SearchForm />
-
+        <SearchForm onSearch={this.performSearch}/>
         <Nav />
-
         {
           (this.state.loading)
           ? <p> LOADING ...</p>
           : <Gallery data={this.state.images}/>
         }
-
       </div>
     );
   }
