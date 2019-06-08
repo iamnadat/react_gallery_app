@@ -1,13 +1,14 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 // import PropTypes from 'prop-types';
 
 const Nav = props => {
     return(
         <nav className="main-nav">
         <ul>
-          <li><a href='/'>Cats</a></li>
-          <li><a href='/'>Dogs</a></li>
-          <li><a href='/'>Computers</a></li>
+          <li><Link to='/Cats' >Cats</Link></li>
+          <li><Link to='/Dogs' >Dogs</Link></li>
+          <li><Link to='/Ocean'>Ocean</Link></li>
         </ul>
       </nav>
     );

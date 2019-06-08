@@ -4,18 +4,20 @@ import './App.css';
 import axios from "axios";
 import SearchForm from './Components/SearchForm';
 import Nav from './Components/Nav';
+import Route404 from './Components/404';
 import Gallery from './Components/Gallery';
+
+import {BrowserRouter as Router,Route,Switch} from 'react-router-dom';
 
 class App extends Component {
 
   state = {
+    query: '',
     images: [],
     loading: true
   };
 
-  //  https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=6c44bce6dad9fa5e8ef4b09f74f99278&tags=Trending&per_page=24&format=json&nojsoncallback=1
-
-  componentDidMount = (query = 'Art') => {
+  componentDidMount = () => {
     this.performSearch();
   }
 
@@ -23,6 +25,7 @@ class App extends Component {
     axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`)
     .then( response => {
       this.setState({
+        query: query,
         images:response.data.photos,
         loading: false
       })
@@ -31,19 +34,34 @@ class App extends Component {
       console.log('Error fetching and parsing data', error);
     });
   }
+  
+  gallery = ({match}) => {
+    if(match.params.query){
+      this.performSearch(match.params.query);
+    }
+    return(
+      (this.state.loading)
+      ? <p>Loading...</p>
+      : <Gallery 
+          data={this.state.images}
+          query={this.state.query}
+        />
+    )
+  }
 
   render() {
     return (
-      <div className="container">
-
-        <SearchForm onSearch={this.performSearch}/>
-        <Nav />
-        {
-          (this.state.loading)
-          ? <p> LOADING ...</p>
-          : <Gallery data={this.state.images}/>
-        }
-      </div>
+      <Router>
+        <div className="container">
+          <SearchForm onSearch={this.performSearch}/>
+          <Nav onSearch={this.performSearch} />
+          <Switch>
+              <Route exact path="/" component={this.gallery} />
+              <Route exact path="/:query" render={this.gallery} />
+              <Route component={ Route404 } />
+          </Switch>
+        </div>
+      </Router>
     );
   }
 }
