@@ -22,7 +22,6 @@ class App extends Component {
   }
 
   performSearch = (query = 'Art') => {
-
     this.setState({
       loading: true
     });
@@ -39,19 +38,24 @@ class App extends Component {
       console.log('Error fetching and parsing data', error);
     });
   }
-  
+
   render() {
     return (
-      <div className="container">
+      <Router>
+        <div className="container">
+        <Route exact path="/"  render={ () => <SearchForm onSearch={this.performSearch}/> } />
+        <Nav />
+        {
+          (this.state.loading)
+          ? <p> LOADING ...</p>
+          : <Switch>
+              <Route exact path="/"  render={ () => <Gallery data={this.state.images} query={this.state.query} /> } />
+              <Route component={Route404}/>
+            </Switch>
+        }
+        </div>
+      </Router>
 
-      <SearchForm onSearch={this.performSearch}/>
-      <Nav />
-      {
-        (this.state.loading)
-        ? <p> LOADING ...</p>
-        : <Gallery data={this.state.images}/>
-      }
-      </div>
     );
   }
 }
