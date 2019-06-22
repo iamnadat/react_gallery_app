@@ -6,10 +6,7 @@ const Nav = props => {
     return(
       <nav className="main-nav">
         <ul>
-<<<<<<< HEAD
           <li><Link to='/' >Search</Link></li>
-=======
->>>>>>> parent of 9a60464... Loading notification
           <li><Link to='/Cats' >Cats</Link></li>
           <li><Link to='/Dogs' >Dogs</Link></li>
           <li><Link to='/Ocean'>Ocean</Link></li>
